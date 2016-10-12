@@ -37,7 +37,6 @@ public class EnronEmail {
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
 		// TODO Auto-generated method stub
 				
-		
 				Configuration conf = new Configuration();
 				Job job = new Job(conf, "Enron_email");
 				job.setJarByClass(EnronEmail.class);
