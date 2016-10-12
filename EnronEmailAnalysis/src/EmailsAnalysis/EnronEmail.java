@@ -32,8 +32,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 public class EnronEmail {
 	/**
-	 * @param args
-	 */
+	 Map reduce program to count the average number of words in e-mail text*/
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
 		// TODO Auto-generated method stub
 				
@@ -70,14 +69,14 @@ public class EnronEmail {
 					int topos = str.indexOf("To:");
 					int subjectpos = str.indexOf("Subject:");
 					int contentpos = str.indexOf("X-FileName:");
-					String msgid = str.substring(msgidpos, datepos);
-					String from = str.substring(frompos, topos);
-					String to = str.substring(topos, subjectpos);
+					String msgid = str.substring(msgidpos, datepos); //get message ID
+					String from = str.substring(frompos, topos); //get from name
+					String to = str.substring(topos, subjectpos); //get To Name
 					
 					String content = str.substring(contentpos);
 					int contentactualstart = content.indexOf(".pst"); //actual content starts after .nsf or .pst filename
 					if (contentactualstart == -1) contentactualstart = content.indexOf(".nsf");
-					String contentactual = content.substring(contentactualstart+5);
+					String contentactual = content.substring(contentactualstart+5); //get actual content
 					String tokenarray[] = contentactual.split(" ");
 					count = tokenarray.length;
 					
@@ -95,7 +94,7 @@ public class EnronEmail {
 						for (IntWritable j: val2) {
 							mailcount ++;
 							 val += j.get();}
-						
+						// calculate average number of words per e-mail
 						if (mailcount>0) avgval = val/mailcount;
 						
 						context.write(new Text("Average number of words per e-mail"), new IntWritable(avgval));

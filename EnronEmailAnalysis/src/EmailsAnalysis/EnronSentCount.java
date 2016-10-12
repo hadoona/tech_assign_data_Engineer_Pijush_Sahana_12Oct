@@ -33,7 +33,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 public class EnronSentCount {
 	/**
-	 * @param args
+	 Map reduce program to determine the number of mails sent to each recipient
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException{
 		// TODO Auto-generated method stub
@@ -68,10 +68,10 @@ public class EnronSentCount {
 					int ccpos = str.indexOf("X-cc:");
 					int bccpos = str.indexOf("X-bcc:");
 
-					String torecipients = str.substring(topos+4, subjectpos);
-					String toccrecipients = str.substring(ccpos+6, bccpos);
+					String torecipients = str.substring(topos+4, subjectpos); //get To list
+					String toccrecipients = str.substring(ccpos+6, bccpos); // get cc list
 					
-					String reciparr[] = torecipients.split(",");
+					String reciparr[] = torecipients.split(","); 
 										
 					for ( String x: reciparr){
 					context.write(new Text(x.trim()), new Text("To"));
@@ -91,7 +91,7 @@ public class EnronSentCount {
 					public void reduce(Text key1, Iterable<Text> val2, Context context) throws IOException, InterruptedException{
 							
 						Double recipcount =0.0;		
-						
+						// Add 1 for each time recipient appears in "To" list and 0.5 for "cc" list
 						for (Text j: val2) {
 							if (j.toString().equals("To")) recipcount += 1;
 							else if (j.toString().equals("cc")) recipcount += 0.5;
